@@ -203,6 +203,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.3em;t
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ================= VERSION iPHONE / MOBILE ================= */
+/* Safari iOS ignore parfois border-radius + overflow:hidden quand le contenu s'anime : on force le découpage arrondi */
+.door{isolation:isolate;clip-path:inset(0 round var(--shape,6px));-webkit-mask-image:-webkit-radial-gradient(white,black);transform:translateZ(0)}
+.field{isolation:isolate;clip-path:inset(0 round 14px);-webkit-mask-image:-webkit-radial-gradient(white,black)}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 :root{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 button,label,.door{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
@@ -360,7 +363,7 @@ button,label,.door{-webkit-tap-highlight-color:transparent;touch-action:manipula
 <div class="sheet-bg" id="sheetBg"></div>
 <button class="fab hidden" id="fab" aria-expanded="false" aria-controls="col" aria-label="Ouvrir mes achievements bonus">
   <svg viewBox="0 0 24 25" aria-hidden="true"><path d="M12 12C8 7 6 4 8 0c3 2 4 6 4 12Z" fill="#1d5a50"/><path d="M12 12c0-6 2-9 5-11 2 4 0 8-5 11Z" fill="#2c7f70"/><ellipse cx="12" cy="19" rx="7" ry="6" fill="#fff4e8"/><path d="M8 18h4" stroke="#c85f35" stroke-width="1.5" stroke-linecap="round"/></svg>
-  <span>Bonus</span><b id="fabN">0/5</b>
+  <span>Bonus</span><b id="fabN">0</b>
 </button>
 
 <script>
@@ -419,7 +422,7 @@ function save() {
 const ach = document.getElementById('ach'), achN = document.getElementById('achN');
 const achList = document.getElementById('achList'), achEmpty = document.getElementById('achEmpty');
 const fab = document.getElementById('fab'), fabN = document.getElementById('fabN'), colEl = document.getElementById('col'), sheetBg = document.getElementById('sheetBg');
-function updateFab() { fabN.textContent = achList.querySelectorAll('input:checked').length + '/' + Object.keys(BONUS).length; }
+function updateFab() { fabN.textContent = achList.querySelectorAll('input:checked').length; }
 function openSheet() { colEl.classList.add('open'); sheetBg.classList.add('show'); fab.setAttribute('aria-expanded', 'true'); }
 function closeSheet() { colEl.classList.remove('open'); sheetBg.classList.remove('show'); fab.setAttribute('aria-expanded', 'false'); }
 fab.addEventListener('click', () => colEl.classList.contains('open') ? closeSheet() : openSheet());
