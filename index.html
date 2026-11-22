@@ -95,7 +95,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.3em;t
 .err{min-height:20px;margin:10px 0 0;font-size:13px;color:#c0392b;font-weight:700}
 .msg{font-family:var(--serif);font-style:italic;font-weight:600;font-size:26px;line-height:1.3;margin:0}
 .hidden{display:none}
-.clue{display:block;width:100%;max-width:100%;height:auto;border-radius:10px}
+.clue{display:block;width:auto;max-width:100%;height:auto;max-height:min(56vh,520px);margin:0 auto;object-fit:contain;border-radius:10px}
+.frame.has-pic{padding:56px 64px 66px}
 .veil{overflow-y:auto}.frame{margin:auto}
 .door{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 @media (max-width:520px){
@@ -174,32 +175,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.3em;t
   .ach-n{font-size:18px}
 }
 @media (prefers-reduced-motion:reduce){.cf{display:none}.sc .cape,.field.super svg.sc{animation:none}}
-/* tetris (case 8) */
-.frame.game{width:min(380px,100%);min-height:0;padding:40px 30px 46px}
-.frame.game .big{font-size:36px}
-.frame.game .sub{display:none}
-.frame.game .close{right:40px;top:28px}
-#game{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px}
-#game.hidden,#snake.hidden{display:none}
-#snake{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px}
-#snake .stats{display:flex;gap:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
-#snake .stats b{font-size:16px;letter-spacing:0}
-#sc{display:block;width:min(100%,300px);aspect-ratio:1/1;background:#1d1b3a;border:4px solid #1d1b3a;border-radius:8px;touch-action:none}
-.spad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,48px);gap:8px;justify-content:center}
-.spad button{border:0;border-radius:10px;background:#1d1b3a;color:var(--ink);font:900 20px var(--sans);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-.spad button:active{background:var(--c4)}
-.spad [data-d=up]{grid-column:2;grid-row:1}.spad [data-d=left]{grid-column:1;grid-row:2}.spad [data-d=down]{grid-column:2;grid-row:2}.spad [data-d=right]{grid-column:3;grid-row:2}
-#snake .go{margin-top:0;width:auto;padding:10px 22px}
-.goal{margin:0;font-size:13px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
-#game .stats{display:flex;gap:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
-#game .stats b{font-size:16px;letter-spacing:0}
-#tc{display:block;height:min(44vh,380px);aspect-ratio:1/2;width:auto;background:#1d1b3a;border:4px solid #1d1b3a;border-radius:8px;touch-action:none}
-.pad{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%}
-.pad button{border:0;border-radius:10px;background:#1d1b3a;color:var(--ink);font:900 20px var(--sans);padding:12px 0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-.pad button:active{background:var(--c4)}
-#game .go{margin-top:0;width:auto;padding:10px 22px}
-.keys{font-size:11px;opacity:.6;margin:0}
-@media (hover:none){.keys{display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ================= VERSION iPHONE / MOBILE ================= */
@@ -272,16 +247,12 @@ button,label,.door{-webkit-tap-highlight-color:transparent;touch-action:manipula
   .go{min-height:52px;font-size:13px;letter-spacing:.2em}
   .msg{font-size:21px}
   .close{width:44px;height:44px;right:34px;top:24px;display:flex;align-items:center;justify-content:center;font-size:32px}
-  .frame.game{padding:38px 16px 44px}
-  .frame.game .close{right:30px;top:20px}
-  #tc{height:min(46vh,380px);height:min(46dvh,380px)}
-  .pad button{padding:15px 0;font-size:22px}
-  .spad{grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,56px)}
-  .spad button{font-size:22px}
+  .frame.has-pic{padding:46px 40px 56px}
+  .clue{max-height:min(48vh,420px);max-height:min(48dvh,420px)}
 }
 @media (max-height:520px) and (orientation:landscape){
   .veil{align-items:flex-start}
-  #tc{height:min(58vh,300px);height:min(58dvh,300px)}
+  .clue{max-height:70vh;max-height:70dvh}
 }
 </style>
 </head>
@@ -330,33 +301,6 @@ button,label,.door{-webkit-tap-highlight-color:transparent;touch-action:manipula
     </div>
     <p class="msg hidden" id="msg"></p>
     <div class="ach hidden" id="ach"><p class="ach-t">Achievements Bonus</p><p class="ach-n" id="achN"></p></div>
-    <div id="game" class="hidden">
-      <p class="goal">Score à atteindre : 1000</p>
-      <div class="stats"><span>Score <b id="ts">0</b></span><span>Lignes <b id="tl">0</b></span></div>
-      <canvas id="tc" width="200" height="400" aria-label="Zone de jeu Tetris"></canvas>
-      <div class="pad">
-        <button data-a="left" aria-label="Gauche">◀</button>
-        <button data-a="rot" aria-label="Tourner">⟳</button>
-        <button data-a="right" aria-label="Droite">▶</button>
-        <button data-a="down" aria-label="Descendre">▼</button>
-        <button data-a="drop" aria-label="Chute rapide">⤓</button>
-      </div>
-      <p class="keys">Flèches : bouger · ↑ tourner · Espace : chute</p>
-      <button class="go" id="tr">Rejouer</button>
-    </div>
-    <div id="snake" class="hidden">
-      <p class="goal">Score à atteindre : 10</p>
-      <div class="stats"><span>Score <b id="ss">0</b></span></div>
-      <canvas id="sc" width="300" height="300" aria-label="Zone de jeu Snake"></canvas>
-      <div class="spad">
-        <button data-d="up" aria-label="Haut">▲</button>
-        <button data-d="left" aria-label="Gauche">◀</button>
-        <button data-d="down" aria-label="Bas">▼</button>
-        <button data-d="right" aria-label="Droite">▶</button>
-      </div>
-      <p class="keys">Flèches ou ZQSD pour diriger le serpent</p>
-      <button class="go" id="sr">Rejouer</button>
-    </div>
   </div>
 </div>
 
@@ -414,8 +358,7 @@ function save() {
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
       unlocked: [...unlocked], earned,
-      checked: [...achList.querySelectorAll('input:checked')].map(i => Number(i.closest('li').dataset.n)),
-      won8, won16
+      checked: [...achList.querySelectorAll('input:checked')].map(i => Number(i.closest('li').dataset.n))
     }));
   } catch (e) {}
 }
@@ -610,177 +553,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   requestAnimationFrame(step);
 }
 
-// ---- Tetris (case 8) ----
-const TET = (() => {
-  const GOAL = 1000, W = 8, H = 16, S = 25, cv = document.getElementById('tc'), cx = cv.getContext('2d');
-  const COL = ['#f2a29a','#f4c25b','#6cc3b5','#8f7be0','#ee7b4d','#f6e9d7','#4fa596'];
-  const SH = [[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[0,1,1],[1,1,0]],[[1,1,0],[0,1,1]]];
-  let board, p, score, lines, over, on = false, raf = 0, acc = 0, last = 0, bag = [];
-  const $s = document.getElementById('ts'), $l = document.getElementById('tl');
-  const rot = m => m[0].map((_, i) => m.map(r => r[i]).reverse());
-  const hit = (m, x, y) => m.some((r, j) => r.some((v, i) => v && (x + i < 0 || x + i >= W || y + j >= H || (y + j >= 0 && board[y + j][x + i]))));
-  function next() {
-    if (!bag.length) { bag = [0,1,2,3,4,5,6]; for (let i = 6; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [bag[i], bag[j]] = [bag[j], bag[i]]; } }
-    const c = bag.pop(), m = SH[c].map(r => r.slice());
-    p = {m, c, x: Math.floor((W - m[0].length) / 2), y: 0};
-    if (hit(p.m, p.x, p.y)) over = true;
-  }
-  function lock() {
-    p.m.forEach((r, j) => r.forEach((v, i) => { if (v && p.y + j >= 0) board[p.y + j][p.x + i] = p.c + 1; }));
-    let n = 0;
-    for (let y = H - 1; y >= 0; y--) if (board[y].every(v => v)) { board.splice(y, 1); board.unshift(Array(W).fill(0)); n++; y++; }
-    if (n) { score += [0,100,300,500,800][n] * (1); lines += n; }
-    $s.textContent = score; $l.textContent = lines;
-    if (score >= GOAL) { winGame(); return; }
-    next();
-  }
-  function move(dx) { if (!hit(p.m, p.x + dx, p.y)) p.x += dx; }
-  function turn() { const m = rot(p.m); for (const k of [0, -1, 1, -2, 2]) if (!hit(m, p.x + k, p.y)) { p.m = m; p.x += k; return; } }
-  function down() { if (!hit(p.m, p.x, p.y + 1)) { p.y++; return true; } lock(); return false; }
-  function drop() { while (!hit(p.m, p.x, p.y + 1)) p.y++; lock(); }
-  function act(a) {
-    if (!on || over) return;
-    if (a === 'left') move(-1); else if (a === 'right') move(1); else if (a === 'rot') turn();
-    else if (a === 'down') down(); else if (a === 'drop') drop();
-    draw();
-  }
-  function cell(x, y, c) { cx.fillStyle = COL[c]; cx.beginPath(); cx.roundRect(x * S + 1, y * S + 1, S - 2, S - 2, 5); cx.fill(); }
-  function draw() {
-    cx.clearRect(0, 0, W * S, H * S);
-    cx.strokeStyle = 'rgba(246,233,215,.06)';
-    for (let i = 1; i < W; i++) { cx.beginPath(); cx.moveTo(i * S, 0); cx.lineTo(i * S, H * S); cx.stroke(); }
-    for (let j = 1; j < H; j++) { cx.beginPath(); cx.moveTo(0, j * S); cx.lineTo(W * S, j * S); cx.stroke(); }
-    board.forEach((r, y) => r.forEach((v, x) => v && cell(x, y, v - 1)));
-    if (!over) {
-      let gy = p.y; while (!hit(p.m, p.x, gy + 1)) gy++;
-      cx.globalAlpha = .22; p.m.forEach((r, j) => r.forEach((v, i) => v && cell(p.x + i, gy + j, p.c))); cx.globalAlpha = 1;
-      p.m.forEach((r, j) => r.forEach((v, i) => v && cell(p.x + i, p.y + j, p.c)));
-    } else {
-      cx.fillStyle = 'rgba(29,27,58,.8)'; cx.fillRect(0, 0, W * S, H * S);
-      cx.fillStyle = '#f6e9d7'; cx.textAlign = 'center';
-      cx.font = '900 26px Archivo, sans-serif'; cx.fillText('Perdu !', W * S / 2, H * S / 2 - 6);
-      cx.font = '700 15px Archivo, sans-serif'; cx.fillText(score + ' points', W * S / 2, H * S / 2 + 20);
-    }
-  }
-  function loop(t) {
-    if (!on) return;
-    acc += t - last; last = t;
-    const iv = Math.max(55, 380 - Math.floor(lines / 5) * 45);
-    if (!over && acc > iv) { acc = 0; down(); draw(); }
-    raf = requestAnimationFrame(loop);
-  }
-  function start() {
-    board = Array.from({length: H}, () => Array(W).fill(0));
-    score = 0; lines = 0; over = false; bag = []; acc = 0; $s.textContent = 0; $l.textContent = 0;
-    next(); draw();
-    if (!on) { on = true; last = performance.now(); raf = requestAnimationFrame(loop); }
-  }
-  function stop() { on = false; cancelAnimationFrame(raf); }
-  document.addEventListener('keydown', e => {
-    if (!on) return;
-    const m = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'rot', ArrowDown: 'down', ' ': 'drop'}[e.key];
-    if (m) { e.preventDefault(); act(m); }
-  });
-  // boutons tactiles, avec répétition quand on maintient (gauche / droite / bas)
-  document.querySelectorAll('.pad button').forEach(b => {
-    let t1, t2; const a = b.dataset.a, rep = a === 'left' || a === 'right' || a === 'down';
-    const end = () => { clearTimeout(t1); clearInterval(t2); };
-    b.addEventListener('pointerdown', e => { e.preventDefault(); act(a); if (rep) t1 = setTimeout(() => { t2 = setInterval(() => act(a), 70); }, 220); });
-    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, end));
-  });
-  // gestes sur la grille : toucher = tourner, glisser = bouger / descendre
-  let g0 = null, gx = 0, gy = 0, moved = false;
-  cv.addEventListener('pointerdown', e => { g0 = {x: e.clientX, y: e.clientY}; gx = e.clientX; gy = e.clientY; moved = false; cv.setPointerCapture(e.pointerId); });
-  cv.addEventListener('pointermove', e => {
-    if (!g0) return;
-    const cw = cv.clientWidth / W;
-    while (e.clientX - gx > cw) { act('right'); gx += cw; moved = true; }
-    while (gx - e.clientX > cw) { act('left'); gx -= cw; moved = true; }
-    while (e.clientY - gy > cw * 1.2) { act('down'); gy += cw * 1.2; moved = true; }
-  });
-  cv.addEventListener('pointerup', () => { if (g0 && !moved) act('rot'); g0 = null; });
-  cv.addEventListener('pointercancel', () => { g0 = null; });
-  document.getElementById('tr').addEventListener('click', start);
-  return {start, stop};
-})();
 function setMsg(i){
+  frame.classList.toggle('has-pic', !!IMAGES[i]);
   if (IMAGES[i]) { msg.innerHTML=''; const im=document.createElement('img'); im.src=IMAGES[i]; im.alt='Indice du jour '+(i+1); im.className='clue'; msg.appendChild(im); }
   else msg.textContent = MESSAGES[i];
 }
-const gameEl = document.getElementById('game');
-let won8 = false;
-function winGame() {
-  won8 = true; TET.stop();
-  gameEl.classList.add('hidden'); frame.classList.remove('game');
-  sub.textContent = 'Bravo !';
-  setMsg(7); msg.classList.remove('hidden'); earn(8);
-}
-
-// ---- Snake (case 16) ----
-const SNK = (() => {
-  const GOAL = 10, N = 15, S = 20, cv = document.getElementById('sc'), cx = cv.getContext('2d'), $s = document.getElementById('ss');
-  let snake, dir, nd, food, score, over, on = false, timer;
-  const free = () => { let f; do { f = {x: Math.floor(Math.random() * N), y: Math.floor(Math.random() * N)}; } while (snake.some(c => c.x === f.x && c.y === f.y)); return f; };
-  function turn(dx, dy) { if (!on || over || (dx === -dir.x && dy === -dir.y)) return; nd = {x: dx, y: dy}; }
-  function tick() {
-    dir = nd;
-    const h = {x: snake[0].x + dir.x, y: snake[0].y + dir.y}, eat = h.x === food.x && h.y === food.y;
-    const body = eat ? snake : snake.slice(0, -1);
-    if (h.x < 0 || h.y < 0 || h.x >= N || h.y >= N || body.some(c => c.x === h.x && c.y === h.y)) { over = true; return; }
-    snake.unshift(h);
-    if (eat) { score++; $s.textContent = score; if (score >= GOAL) { winSnake(); return; } food = free(); } else snake.pop();
-  }
-  function sq(x, y, c, r) { cx.fillStyle = c; cx.beginPath(); cx.roundRect(x * S + 1, y * S + 1, S - 2, S - 2, r); cx.fill(); }
-  function draw() {
-    cx.clearRect(0, 0, N * S, N * S);
-    cx.fillStyle = 'rgba(246,233,215,.05)';
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if ((x + y) % 2) cx.fillRect(x * S, y * S, S, S);
-    cx.fillStyle = '#ee7b4d'; cx.beginPath(); cx.arc(food.x * S + S / 2, food.y * S + S / 2, S / 2 - 3, 0, 6.283); cx.fill();
-    snake.forEach((c, i) => sq(c.x, c.y, i ? '#6cc3b5' : '#f4c25b', i ? 6 : 8));
-    if (over) {
-      cx.fillStyle = 'rgba(29,27,58,.8)'; cx.fillRect(0, 0, N * S, N * S);
-      cx.fillStyle = '#f6e9d7'; cx.textAlign = 'center';
-      cx.font = '900 30px Archivo, sans-serif'; cx.fillText('Perdu !', N * S / 2, N * S / 2 - 6);
-      cx.font = '700 16px Archivo, sans-serif'; cx.fillText(score + ' point' + (score > 1 ? 's' : ''), N * S / 2, N * S / 2 + 22);
-    }
-  }
-  function loop() { if (!on) return; if (!over) { tick(); if (!on) return; draw(); } timer = setTimeout(loop, Math.max(65, 140 - score * 4)); }
-  function start() {
-    clearTimeout(timer);
-    snake = [{x: 7, y: 7}, {x: 6, y: 7}, {x: 5, y: 7}]; dir = nd = {x: 1, y: 0};
-    score = 0; over = false; $s.textContent = 0; food = free(); draw();
-    on = true; timer = setTimeout(loop, 400);
-  }
-  function stop() { on = false; clearTimeout(timer); }
-  const D = {up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0]};
-  document.addEventListener('keydown', e => {
-    if (!on) return;
-    const m = {ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', z: 'up', w: 'up', s: 'down', q: 'left', a: 'left', d: 'right'}[e.key.length > 1 ? e.key : e.key.toLowerCase()];
-    if (m) { e.preventDefault(); turn(...D[m]); }
-  });
-  document.querySelectorAll('.spad button').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); turn(...D[b.dataset.d]); }));
-  let g0 = null;
-  cv.addEventListener('pointerdown', e => { g0 = {x: e.clientX, y: e.clientY}; });
-  cv.addEventListener('pointermove', e => {
-    if (!g0) return;
-    const dx = e.clientX - g0.x, dy = e.clientY - g0.y;
-    if (Math.max(Math.abs(dx), Math.abs(dy)) < 22) return;
-    if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0); else turn(0, dy > 0 ? 1 : -1);
-    g0 = {x: e.clientX, y: e.clientY};
-  });
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => cv.addEventListener(ev, () => { g0 = null; }));
-  document.getElementById('sr').addEventListener('click', start);
-  return {start, stop};
-})();
-const snakeEl = document.getElementById('snake');
-let won16 = false;
-function winSnake() {
-  won16 = true; SNK.stop();
-  snakeEl.classList.add('hidden'); frame.classList.remove('game');
-  sub.textContent = 'Bravo !';
-  setMsg(15); msg.classList.remove('hidden'); earn(16);
-}
-
 function openDoor(d, btn) {
   current = d; opener = btn;
   const cols = ['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)'];
@@ -788,7 +565,7 @@ function openDoor(d, btn) {
   frame.style.setProperty('--bd', cols[i1]); frame.style.setProperty('--sh', cols[i2]);
   dayNum.textContent = String(d).padStart(2, '0');
   err.textContent = ''; code.value = ''; ach.classList.add('hidden');
-  TET.stop(); SNK.stop(); frame.classList.remove('game'); gameEl.classList.add('hidden'); snakeEl.classList.add('hidden');
+  frame.classList.remove('has-pic');
   if (unlocked.has(d)) { reveal(); } else {
     lock.classList.remove('hidden'); msg.classList.add('hidden'); sub.textContent = 'Code requis';
   }
@@ -798,15 +575,9 @@ function openDoor(d, btn) {
 function reveal() {
   unlocked.add(current); save();
   lock.classList.add('hidden');
-  if (current === 8 && !won8) {
-    msg.classList.add('hidden'); frame.classList.add('game'); gameEl.classList.remove('hidden'); TET.start();
-  } else if (current === 16 && !won16) {
-    msg.classList.add('hidden'); frame.classList.add('game'); snakeEl.classList.remove('hidden'); SNK.start();
-  } else {
-    setMsg(current - 1);
-    msg.classList.remove('hidden');
-    earn(current);
-  }
+  setMsg(current - 1);
+  msg.classList.remove('hidden');
+  earn(current);
   sub.textContent = 'La chasse au trésor commence !';
   opener.classList.add('open');
 }
@@ -818,7 +589,7 @@ function tryCode() {
     code.value = ''; code.focus();
   }
 }
-function closeFrame() { TET.stop(); SNK.stop(); flushAchievements(); veil.classList.remove('show'); if (opener) opener.focus(); }
+function closeFrame() { flushAchievements(); veil.classList.remove('show'); if (opener) opener.focus(); }
 
 document.getElementById('go').addEventListener('click', tryCode);
 code.addEventListener('keydown', e => { if (e.key === 'Enter') tryCode(); });
@@ -845,7 +616,6 @@ document.addEventListener('keydown', e => {
     const b = doors.find(x => x.getAttribute('aria-label') === 'Case ' + n);
     if (b) b.classList.add('open');
   });
-  won8 = !!d.won8; won16 = !!d.won16;
   (d.earned || []).forEach(n => { if (BONUS[n] && !earned.includes(n)) earned.push(n); });
   flushAchievements();
   const checked = new Set(d.checked || []);
